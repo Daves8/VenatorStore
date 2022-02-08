@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Подтверждение покупки";
+}
+
+@if (ViewBag.Form == 1)
+{
+    <div class="row" style="padding-top: 20%;">
+        <div class="col-3"></div>
+        <div class="col-6 border border-dark rounded pt-3 pb-4 text-center" style="background-image: url(img/backgr2.jpg);">
+            <h3 class="display-5" style="font-size: 2.25rem;">
+                <em><u><b>Подтверждение!</b></u><br>Вы подтверждаете покупку @ViewBag.CountOfProducts товаров на сумму @ViewBag.TotalCost золота?</em>
+            </h3>
+            <a class="btn btn-success btn-lg" asp-area="" asp-controller="Home" asp-action="Confirmed">Купить</a>
+            <a class="btn btn-secondary btn-lg" asp-area="" asp-controller="Home" asp-action="Cart">Отмена</a>
+        </div>
+        <div class="col-3"></div>
+    </div>
+}
+
+@if (ViewBag.Form == 0)
+{
+    <div class="row" style="padding-top: 20%;">
+        <div class="col-3"></div>
+        <div class="col-6 border border-dark rounded pt-3 pb-4 text-center" style="background-image: url(img/backgr2.jpg);">
+            <h3 class="display-5" style="font-size: 2.25rem;"><em><u><b>Недостаточно золота!</b></u><br>Не хватает @ViewBag.DifferenceInGold! У Вас @ViewData["MyGold"] золота, необходимо @ViewBag.TotalCost для @ViewBag.CountOfProducts товаров.</em></h3>
+            <a class="btn btn-secondary btn-lg" asp-area="" asp-controller="Home" asp-action="Cart">В Корзину</a>
+        </div>
+        <div class="col-3"></div>
+    </div>
+}
+
+@if (ViewBag.Form == 2)
+{
+    <div class="row" style="padding-top: 20%;">
+        <div class="col-3"></div>
+        <div class="col-6 border border-dark rounded pt-3 pb-4 text-center" style="background-image: url(img/backgr2.jpg);">
+            <h3 class="display-5" style="font-size: 2.25rem;">
+                <em><u><b>Спасибо за покупку!</b></u></em>
+            </h3>
+            <a class="btn btn-success btn-lg" asp-area="" asp-controller="Home" asp-action="Shop">В Магазин</a>
+        </div>
+        <div class="col-3"></div>
+    </div>
+}

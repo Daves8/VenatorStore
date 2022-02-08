@@ -1,0 +1,311 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<div class="row text-center py-4 text-decoration-underline display-5">
+    <div class="col-12">
+        <em>Корзина</em>
+    </div>
+</div>
+
+@if (ViewBag.CountOfProducts != 0)
+{
+    <div class="row pb-3">
+        <div class="col-5"></div>
+        <div class="col-7 border border-dark rounded py-3" style="background-image: url(img/backgr2.jpg);">
+            <h3 class="display-5 text-center" style="font-size: 2.25rem;"><em>Стоимость @ViewBag.CountOfProducts товаров – <u>@ViewBag.TotalCost</u> золота</em></h3>
+            <div class="text-end">
+                <a class="btn btn-success btn-lg" asp-area="" asp-controller="Home" asp-action="PurchaseConfirmation">Перейти к оформлению</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row" style="padding-top: 15%;">
+        <div class="col-4"></div>
+        <div class="col-4 border border-dark rounded pt-3 pb-4 text-center" style="background-image: url(img/backgr2.jpg);">
+            <h3 class="display-5" style="font-size: 2.25rem;">
+                <em><u><b>Пусто!</b></u><br></em>
+            </h3>
+            <a class="btn btn-success btn-lg" asp-area="" asp-controller="Home" asp-action="Shop">В Магазин</a>
+        </div>
+        <div class="col-4"></div>
+    </div>
+}
+
+@if (ViewBag.ItemsHouse != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Дома
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsHouse)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItemFromCart" asp-route-id="@item.Id">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsShop != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Лавки
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsShop)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItemFromCart" asp-route-id="@item.Id">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsHorse != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Лошади
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsHorse)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItemFromCart" asp-route-id="@item.Id">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsJacket != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Куртки
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsJacket)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItemFromCart" asp-route-id="@item.Id">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsPants != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Штаны
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsPants)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItemFromCart" asp-route-id="@item.Id">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsBoots != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Сапоги
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsBoots)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItemFromCart" asp-route-id="@item.Id">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsSword != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Мечи
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsSword)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItemFromCart" asp-route-id="@item.Id">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsBow != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Луки
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsBow)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItemFromCart" asp-route-id="@item.Id">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsKnife != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Ножи
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsKnife)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItemFromCart" asp-route-id="@item.Id">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.CountOfProducts != 0)
+{
+    <div class="row py-3">
+        <div class="col-7 border border-dark rounded py-3" style="background-image: url(img/backgr2.jpg);">
+            <h3 class="display-5 text-center" style="font-size: 2.25rem;"><em>Стоимость @ViewBag.CountOfProducts товаров – <u>@ViewBag.TotalCost</u> золота</em></h3>
+            <div class="text-end">
+                <a class="btn btn-success btn-lg" asp-area="" asp-controller="Home" asp-action="PurchaseConfirmation">Перейти к оформлению</a>
+            </div>
+        </div>
+    </div>
+}

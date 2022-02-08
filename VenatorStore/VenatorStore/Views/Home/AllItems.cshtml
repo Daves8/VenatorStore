@@ -1,0 +1,432 @@
+﻿@model Item
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Все товары";
+}
+
+<div class="row text-center py-4 text-decoration-underline display-4" style="font-size: 2.0rem;">
+    <div class="col-3">
+        <em>Добавление товара</em>
+    </div>
+</div>
+
+<div class="row pb-5" style="font-size: 1.25rem;">
+    <div class="col-3">
+        <form method="post" asp-controller="Home" asp-action="AllItems" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label">Название</label>
+                <input asp-for="Title" class="form-control" type="text" placeholder="Название..." maxlength="20" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Категория</label>
+                <select asp-for="Category" class="form-control">
+                    <option value="House">Дом</option>
+                    <option value="Shop">Лавка</option>
+                    <option value="Horse">Лошадь</option>
+                    <option value="Jacket">Куртка</option>
+                    <option value="Pants">Штаны</option>
+                    <option value="Boots">Сапоги</option>
+                    <option value="Sword">Меч</option>
+                    <option value="Bow">Лук</option>
+                    <option value="Knife">Нож</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Описание</label>
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Описание..." maxlength="150" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Стоимость</label>
+                <input asp-for="Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Изображение</label>
+                <input name="image" class="form-control" type="file" accept="image/*" required>
+                @if (ViewBag.Error != null)
+                {
+                    <div style="font-size: 1.2rem; color: red;">
+                        @ViewBag.Error
+                    </div>
+                }
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+    </div>
+</div>
+
+<div class="row text-center py-4 text-decoration-underline display-5">
+    <div class="col-12">
+        <em>Все товары</em>
+    </div>
+</div>
+
+@if (ViewBag.ItemsHouse != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Дома
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsHouse)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <form method="post" asp-controller="Home" asp-action="ChangePrice">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <table>
+                                <tr>
+                                    <td><label class="form-label"><mark>Цена:</mark></label></td>
+                                    <td width="38%"><input name="newPrice" value="@item.Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required></td>
+                                    <td><button type="submit" class="btn btn-info">Изменить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItem" asp-route-id="@item.Id">
+                            <table>
+                                <tr>
+                                    <td width="65%"></td>
+                                    <td><button type="submit" class="btn btn-danger" style="width: 115%;">Удалить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsShop != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Лавки
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsShop)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <form method="post" asp-controller="Home" asp-action="ChangePrice">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <table>
+                                <tr>
+                                    <td><label class="form-label"><mark>Цена:</mark></label></td>
+                                    <td width="38%"><input name="newPrice" value="@item.Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required></td>
+                                    <td><button type="submit" class="btn btn-info">Изменить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItem" asp-route-id="@item.Id">
+                            <table>
+                                <tr>
+                                    <td width="65%"></td>
+                                    <td><button type="submit" class="btn btn-danger" style="width: 115%;">Удалить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsHorse != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Лошади
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsHorse)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <form method="post" asp-controller="Home" asp-action="ChangePrice">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <table>
+                                <tr>
+                                    <td><label class="form-label"><mark>Цена:</mark></label></td>
+                                    <td width="38%"><input name="newPrice" value="@item.Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required></td>
+                                    <td><button type="submit" class="btn btn-info">Изменить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItem" asp-route-id="@item.Id">
+                            <table>
+                                <tr>
+                                    <td width="65%"></td>
+                                    <td><button type="submit" class="btn btn-danger" style="width: 115%;">Удалить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsJacket != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Куртки
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsJacket)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <form method="post" asp-controller="Home" asp-action="ChangePrice">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <table>
+                                <tr>
+                                    <td><label class="form-label"><mark>Цена:</mark></label></td>
+                                    <td width="38%"><input name="newPrice" value="@item.Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required></td>
+                                    <td><button type="submit" class="btn btn-info">Изменить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItem" asp-route-id="@item.Id">
+                            <table>
+                                <tr>
+                                    <td width="65%"></td>
+                                    <td><button type="submit" class="btn btn-danger" style="width: 115%;">Удалить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsPants != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Штаны
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsPants)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <form method="post" asp-controller="Home" asp-action="ChangePrice">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <table>
+                                <tr>
+                                    <td><label class="form-label"><mark>Цена:</mark></label></td>
+                                    <td width="38%"><input name="newPrice" value="@item.Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required></td>
+                                    <td><button type="submit" class="btn btn-info">Изменить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItem" asp-route-id="@item.Id">
+                            <table>
+                                <tr>
+                                    <td width="65%"></td>
+                                    <td><button type="submit" class="btn btn-danger" style="width: 115%;">Удалить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsBoots != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Сапоги
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsBoots)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <form method="post" asp-controller="Home" asp-action="ChangePrice">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <table>
+                                <tr>
+                                    <td><label class="form-label"><mark>Цена:</mark></label></td>
+                                    <td width="38%"><input name="newPrice" value="@item.Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required></td>
+                                    <td><button type="submit" class="btn btn-info">Изменить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItem" asp-route-id="@item.Id">
+                            <table>
+                                <tr>
+                                    <td width="65%"></td>
+                                    <td><button type="submit" class="btn btn-danger" style="width: 115%;">Удалить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsSword != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Мечи
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsSword)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <form method="post" asp-controller="Home" asp-action="ChangePrice">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <table>
+                                <tr>
+                                    <td><label class="form-label"><mark>Цена:</mark></label></td>
+                                    <td width="38%"><input name="newPrice" value="@item.Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required></td>
+                                    <td><button type="submit" class="btn btn-info">Изменить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItem" asp-route-id="@item.Id">
+                            <table>
+                                <tr>
+                                    <td width="65%"></td>
+                                    <td><button type="submit" class="btn btn-danger" style="width: 115%;">Удалить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsBow != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Луки
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsBow)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <form method="post" asp-controller="Home" asp-action="ChangePrice">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <table>
+                                <tr>
+                                    <td><label class="form-label"><mark>Цена:</mark></label></td>
+                                    <td width="38%"><input name="newPrice" value="@item.Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required></td>
+                                    <td><button type="submit" class="btn btn-info">Изменить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItem" asp-route-id="@item.Id">
+                            <table>
+                                <tr>
+                                    <td width="65%"></td>
+                                    <td><button type="submit" class="btn btn-danger" style="width: 115%;">Удалить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsKnife != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Ножи
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsKnife)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <form method="post" asp-controller="Home" asp-action="ChangePrice">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <table>
+                                <tr>
+                                    <td><label class="form-label"><mark>Цена:</mark></label></td>
+                                    <td width="38%"><input name="newPrice" value="@item.Price" class="form-control" type="number" placeholder="0" min="1" max="1000000" required></td>
+                                    <td><button type="submit" class="btn btn-info">Изменить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                        <form method="post" asp-controller="Home" asp-action="DeleteItem" asp-route-id="@item.Id">
+                            <table>
+                                <tr>
+                                    <td width="65%"></td>
+                                    <td><button type="submit" class="btn btn-danger" style="width: 115%;">Удалить</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

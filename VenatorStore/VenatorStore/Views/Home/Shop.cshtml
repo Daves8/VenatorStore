@@ -1,0 +1,425 @@
+﻿@model Filter;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Магазин";
+}
+
+<div class="row text-center py-4 text-decoration-underline display-5">
+    <div class="col-12">
+        <em>Все товары</em>
+    </div>
+</div>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="row pb-3 text-center lead">
+        <div class="col-12">
+            Для совершения покупок необходимо <a asp-controller="Home" asp-action="Registration" style="text-decoration: none;">зарегистрироваться</a>.
+        </div>
+    </div>
+}
+
+<div class="row text-center pb-1 text-decoration-underline display-4" style="font-size: 2.0rem;">
+    <div class="col-2">
+        <em>Фильтр</em>
+    </div>
+</div>
+
+<div class="row pb-5" style="font-size: 1.25rem;">
+    <div class="col-2">
+        <form method="get" asp-controller="Home" asp-action="Shop">
+
+            <div class="mb-1">
+                <label class="form-check-label" style="width: 50%;">Дома</label>
+                <input asp-for="House" class="form-check-input" type="checkbox" checked="@ViewBag.Filter.House">
+            </div>
+            <div class="mb-1">
+                <label class="form-check-label" style="width: 50%;">Лавки</label>
+                <input asp-for="Shop" class="form-check-input" type="checkbox" checked="@ViewBag.Filter.Shop">
+            </div>
+            <div class="mb-1">
+                <label class="form-check-label" style="width: 50%;">Лошади</label>
+                <input asp-for="Horse" class="form-check-input" type="checkbox" checked="@ViewBag.Filter.Horse">
+            </div>
+            <div class="mb-1">
+                <label class="form-check-label" style="width: 50%;">Куртки</label>
+                <input asp-for="Jacket" class="form-check-input" type="checkbox" checked="@ViewBag.Filter.Jacket">
+            </div>
+            <div class="mb-1">
+                <label class="form-check-label" style="width: 50%;">Штаны</label>
+                <input asp-for="Pants" class="form-check-input" type="checkbox" checked="@ViewBag.Filter.Pants">
+            </div>
+            <div class="mb-1">
+                <label class="form-check-label" style="width: 50%;">Сапоги</label>
+                <input asp-for="Boots" class="form-check-input" type="checkbox" checked="@ViewBag.Filter.Boots">
+            </div>
+            <div class="mb-1">
+                <label class="form-check-label" style="width: 50%;">Мечи</label>
+                <input asp-for="Sword" class="form-check-input" type="checkbox" checked="@ViewBag.Filter.Sword">
+            </div>
+            <div class="mb-1">
+                <label class="form-check-label" style="width: 50%;">Луки</label>
+                <input asp-for="Bow" class="form-check-input" type="checkbox" checked="@ViewBag.Filter.Bow">
+            </div>
+            <div class="mb-1">
+                <label class="form-check-label" style="width: 50%;">Ножи</label>
+                <input asp-for="Knife" class="form-check-input" type="checkbox" checked="@ViewBag.Filter.Knife">
+            </div>
+
+            <div class="mb-1">
+                <label class="form-label">Минимальная цена</label>
+                <input asp-for="MinPrice" class="form-control" type="number" value="@ViewBag.Filter.MinPrice" min="1" max="1000000">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Максимальная цена</label>
+                <input asp-for="MaxPrice" class="form-control" type="number" value="@ViewBag.Filter.MaxPrice" min="1" max="1000000">
+            </div>
+            <button type="submit" class="btn btn-primary">Найти</button>
+            <a class="btn btn-secondary" asp-controller="Home" asp-action="ClearFilter">Сбросить</a>
+        </form>
+    </div>
+</div>
+
+@if (ViewBag.CountOfProducts == 0)
+{
+    <div class="row text-center pb-5 text-decoration-underline display-5" style="font-size: 2.25rem;">
+        <div class="col-12">
+            <em>Ничего не найдено!</em>
+        </div>
+    </div>
+}
+
+@if (ViewBag.ItemsHouse != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Дома
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsHouse)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-info">Добавить в корзину</button>
+                                </div>
+                            </form>
+                            <form method="post" asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsShop != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Лавки
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsShop)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-info">Добавить в корзину</button>
+                                </div>
+                            </form>
+                            <form method="post" asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsHorse != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Лошади
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsHorse)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-info">Добавить в корзину</button>
+                                </div>
+                            </form>
+                            <form method="post" asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsJacket != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Куртки
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsJacket)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-info">Добавить в корзину</button>
+                                </div>
+                            </form>
+                            <form method="post" asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsPants != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Штаны
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsPants)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-info">Добавить в корзину</button>
+                                </div>
+                            </form>
+                            <form method="post" asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsBoots != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Сапоги
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsBoots)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-info">Добавить в корзину</button>
+                                </div>
+                            </form>
+                            <form method="post" asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsSword != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Мечи
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsSword)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-info">Добавить в корзину</button>
+                                </div>
+                            </form>
+                            <form method="post" asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsBow != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Луки
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsBow)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-info">Добавить в корзину</button>
+                                </div>
+                            </form>
+                            <form method="post" asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ViewBag.ItemsKnife != null)
+{
+    <div class="row pt-1 pb-2 text-decoration-underline" style="font-size: 2.0rem;">
+        <div class="col-12">
+            Ножи
+        </div>
+    </div>
+    <div class="row">
+        @foreach (Item item in ViewBag.ItemsKnife)
+        {
+            <div class="col-3 pb-4">
+                <div class="card">
+                    <img src="img/items/@item.Category/@item.ImageUrl" class="card-img-top" alt="@item.Title" title="@item.Title" style="max-height: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@item.Title</h5>
+                        <p class="card-text" style="min-height: 8rem;">@item.Description</p>
+                        <div><mark><em>Цена: @item.Price зол.</em></mark></div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form method="post" asp-controller="Home" asp-action="AddToCart" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-info">Добавить в корзину</button>
+                                </div>
+                            </form>
+                            <form method="post" asp-controller="Home" asp-action="Buy" asp-route-id="@item.Id">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-success">Купить</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
